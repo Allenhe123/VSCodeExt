@@ -6,6 +6,7 @@ const vscode = require('vscode');
 // your extension is activated the very first time the command is executed
 
 /**
+ * 插件被激活时触发，所有代码总入口
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
@@ -29,7 +30,10 @@ function activate(context) {
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
-function deactivate() {}
+//插件被释放时触发
+function deactivate() {
+	console.log('your vscode-plugin has been released！')
+}
 
 module.exports = {
 	activate,
