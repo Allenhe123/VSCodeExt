@@ -5,6 +5,10 @@
 	"version": "0.0.1",
 	"publisher": "allenhe",
 	"icon": "icon/icon.png",
+	"repository": {
+        "type": "git",
+        "url":"https://github.com/Allenhe123/VSCodeExt.git"
+    },
 	"engines": {
 		"vscode": "^1.38.0"
 	},
