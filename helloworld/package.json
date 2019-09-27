@@ -16,32 +16,111 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:extension.sayHello",
+		"onCommand:extension.getCurrentFilePath",
+		"onCommand:extension.testMenuShow",
+		"onCommand:extension.openWebview"
 	],
-	"main": "./extension.js",
+	"main": "./src/extension.js",
 	"contributes": {
+		"configuration": {
+            "type": "object",
+            "title": "Code插件demo",
+            "properties": {
+                "vscodePluginDemo.yourName": {
+                    "type": "string",
+                    "default": "guest",
+                    "description": "你的名字"
+                },
+                "vscodePluginDemo.showTip": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "启动时显示自定义欢迎页"
+                }
+            }
+        },
 		"commands": [
 			{
-				"command": "extension.helloWorld",
+				"command": "extension.sayHello",
 				"title": "Hello World"
-			}
+			},
+			{
+				"command": "extension.getCurrentFilePath",
+				"title": "getCurPath"
+			},
+			{
+                "command": "extension.testMenuShow",
+                "title": "这个菜单仅在JS文件中出现",
+				"icon": {
+                    "light": "./icon/tool-light.svg",
+                    "dark": "./icon/tool-light.svg"
+                }
+			},
+			{
+                "command": "extension.openWebview",
+                "title": "OpenWebView"
+            }
 		],
 		"keybindings": [
 			{
-				"command": "extension.helloWorld",
+				"command": "extension.sayHello",
 				"key": "ctrl+f10",
 				"mac": "cmd+f10",
 				"when": "editorTextFocus"
-			}
+			},
+			{
+                "command": "extension.openWebview",
+                "key": "ctrl+f9",
+                "mac": "cmd+f9",
+                "when": "editorTextFocus"
+            }
 		],
 		"menus": {
 			"editor/context": [
 				{
 					"when": "editorFocus",
-					"command": "extension.helloWorld",
-					"group": "navigation"
-				}
-			]
+					"command": "extension.sayHello",
+					"group": "navigation@6"
+				},
+				{
+					"when": "editorFocus",
+					"command": "extension.getCurrentFilePath",
+					"group": "navigation@5"
+				},
+				{
+                    "when": "editorFocus && resourceLangId == javascript",
+                    "command": "extension.testMenuShow",
+                    "group": "z_commands"
+				},
+				{
+                    "command": "extension.openWebview",
+                    "group": "navigation"
+                }
+			],
+			"editor/title": [
+                {
+                    "when": "editorFocus && resourceLangId == javascript",
+                    "command": "extension.testMenuShow",
+                    "group": "navigation"
+                }
+            ],
+            "editor/title/context": [
+                {
+                    "when": "resourceLangId == javascript",
+                    "command": "extension.testMenuShow",
+                    "group": "navigation"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "extension.getCurrentFilePath",
+                    "group": "navigation"
+				},
+				{
+                    "command": "extension.openWebview",
+                    "group": "navigation"
+                }
+            ]
 		}
 	},
 	"scripts": {
