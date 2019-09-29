@@ -40,12 +40,12 @@ new Vue({
     },
     mounted() {
         this.time = this.getTime();
-        callVscode({cmd: 'getConfig', key: 'vscodePluginDemo.yourName'}, userName => this.userName = userName);
-        callVscode({cmd: 'getConfig', key: 'vscodePluginDemo.showTip'}, show => this.show = show);
+        callVscode({cmd: 'getConfig', key: 'helloworld.yourName'}, userName => this.userName = userName);
+        callVscode({cmd: 'getConfig', key: 'helloworld.showTip'}, show => this.show = show);
     },
     watch: {
         show(nv, ov) {
-            callVscode({cmd: 'setConfig', key: 'vscodePluginDemo.showTip', value: nv}, null);
+            callVscode({cmd: 'setConfig', key: 'helloworld.showTip', value: nv}, null);
         }
     },
     methods: {

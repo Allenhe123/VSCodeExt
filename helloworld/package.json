@@ -16,23 +16,20 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.sayHello",
-		"onCommand:extension.getCurrentFilePath",
-		"onCommand:extension.testMenuShow",
-		"onCommand:extension.openWebview"
+		"*"
 	],
 	"main": "./src/extension.js",
 	"contributes": {
 		"configuration": {
             "type": "object",
-            "title": "Code插件demo",
+            "title": "helloworld plugin",
             "properties": {
-                "vscodePluginDemo.yourName": {
+                "helloworld.yourName": {
                     "type": "string",
-                    "default": "guest",
-                    "description": "你的名字"
+                    "default": "周杰伦",
+                    "description": "allenhe"
                 },
-                "vscodePluginDemo.showTip": {
+                "helloworld.showTip": {
                     "type": "boolean",
                     "default": true,
                     "description": "启动时显示自定义欢迎页"
@@ -59,6 +56,10 @@
 			{
                 "command": "extension.openWebview",
                 "title": "OpenWebView"
+			},
+			{
+                "command": "extension.showWelcome",
+                "title": "showWelcome"
             }
 		],
 		"keybindings": [

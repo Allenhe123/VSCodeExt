@@ -59,6 +59,17 @@ const messageHandler = {
     openFileInVscode(global, message) {
         util.openFileInVscode(`${global.projectPath}/${message.path}`, message.text);
         invokeCallback(global.panel, message, {code: 0, text: '成功'});
+
+        // var exec = require('child_process').exec;
+        // var cmdStr = 'ls -l';
+        // exec(cmdStr, function (err, stdout, srderr) {
+        // if(err) {
+        // console.log(srderr);
+        // } else {
+        // console.log(stdout);
+        // }
+        // });
+
     },
     openUrlInBrowser(global, message) {
         util.openUrlInBrowser(message.url);
@@ -92,11 +103,17 @@ module.exports = function(context) {
         panel.webview.html = getWebViewContent(context, 'src/view/test-webview.html');
 
         panel.webview.onDidReceiveMessage(message => {
+            // cmd表示要执行的方法名称
             if (messageHandler[message.cmd]) {
                 messageHandler[message.cmd](global, message);
             } else {
                 util.showError(`未找到名为 ${message.cmd} 回调方法!`);
             }
         }, undefined, context.subscriptions);
+
+        panel.onDidDispose(message => {
+            panel.dispose();
+        });
+
     }));
 };
