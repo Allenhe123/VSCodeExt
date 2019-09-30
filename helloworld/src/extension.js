@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 const Uri = require('url');
+// var exec = require('child_process').exec;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 
@@ -36,7 +37,9 @@ function activate(context) {
 	require('./test-menu-when')(context);        // 测试菜单when命令
 	require('./webview')(context); 				 // Webview
 	require('./welcome')(context); 				 // 欢迎提示
-    require('./other')(context); 				 // 其它杂七杂八演示代码
+	require('./other')(context); 				 // 其它杂七杂八演示代码
+	
+	// require('./view/view.js');
 
 	// context.subscriptions.push(disposable);
 	// context.subscriptions.push(getpath);
