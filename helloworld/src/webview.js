@@ -25,12 +25,15 @@ function getWebViewContent(context, templatePath) {
  * @param {*} message 
  * @param {*} resp 
  */
-function invokeCallback(panel, message, resp) {
+function invokeCallback(panel, message, resp) 
+{
     console.log('回调消息：', resp);
     // 错误码在400-600之间的，默认弹出错误提示
-    if (typeof resp == 'object' && resp.code && resp.code >= 400 && resp.code < 600) {
+    if (typeof resp == 'object' && resp.code && resp.code >= 400 && resp.code < 600) 
+    {
         util.showError(resp.message || '发生未知错误！');
     }
+    // 插件给Webview发送消息
     panel.webview.postMessage({cmd: 'vscodeCallback', cbid: message.cbid, data: resp});
 }
 
@@ -56,21 +59,28 @@ const messageHandler = {
         // 这里的回调其实是假的，并没有真正判断是否成功
         invokeCallback(global.panel, message, {code: 0, text: '成功'});
     },
-    openFileInVscode(global, message) {
-        util.openFileInVscode(`${global.projectPath}/${message.path}`, message.text);
+
+    update_fm(global, message) {
+        // util.openFileInVscode(`${global.projectPath}/${message.path}`, message.text);
         invokeCallback(global.panel, message, {code: 0, text: '成功'});
 
-        // var exec = require('child_process').exec;
-        // var cmdStr = 'ls -l';
-        // exec(cmdStr, function (err, stdout, srderr) {
-        // if(err) {
-        // console.log(srderr);
-        // } else {
-        // console.log(stdout);
-        // }
-        // });
-
+        var exec = require('child_process').exec;
+        var cmdStr = 'ls -l';
+        exec(cmdStr, function (err, stdout, srderr) 
+        {
+            if(err) 
+            {
+                console.log(srderr);
+                vscode.window.showInformationMessage(srderr);
+            } 
+            else 
+            {
+                console.log(stdout);
+                vscode.window.showInformationMessage(stdout);
+            }
+        });
     },
+
     openUrlInBrowser(global, message) {
         util.openUrlInBrowser(message.url);
         invokeCallback(global.panel, message, {code: 0, text: '成功'});
@@ -112,6 +122,7 @@ module.exports = function(context) {
         }, undefined, context.subscriptions);
 
         panel.onDidDispose(message => {
+            console.log("receive dispose msg");
             panel.dispose();
         });
 

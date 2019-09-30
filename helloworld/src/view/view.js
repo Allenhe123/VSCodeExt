@@ -43,10 +43,7 @@ function update_fm()
     console.log(document.getElementById("newfm").value);
     console.log(document.getElementById("oldfm").value);
 
-    callVscode( {cmd: 'openFileInFinder', path: `package.json`}, () => 
-        {
-            this.alert('exec successfully！');
-        });
+    callVscode( {cmd: 'update_fm', path: `package.json`}, () => { this.alert('update fm successfully！');} );
 
     // // var exec = require('child_process').exec;
 
