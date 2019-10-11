@@ -36,7 +36,7 @@ function activate(context) {
 	require('./test-command-param')(context);    // 测试命令参数
 	require('./test-menu-when')(context);        // 测试菜单when命令
 	require('./webview')(context); 				 // Webview
-	require('./welcome')(context); 				 // 欢迎提示
+	// require('./welcome')(context); 				 // 欢迎提示
 	require('./other')(context); 				 // 其它杂七杂八演示代码
 	
 	// require('./view/view.js');

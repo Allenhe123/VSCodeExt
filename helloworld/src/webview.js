@@ -61,23 +61,48 @@ const messageHandler = {
     },
 
     update_fm(global, message) {
-        // util.openFileInVscode(`${global.projectPath}/${message.path}`, message.text);
         invokeCallback(global.panel, message, {code: 0, text: '成功'});
-
         var exec = require('child_process').exec;
-        var cmdStr = 'ls -l';
-        exec(cmdStr, function (err, stdout, srderr) 
+        var cmdStr = message.param;
+        exec(cmdStr, function (err, stdout, srderr)
         {
-            if(err) 
+            if(err)
             {
-                console.log(srderr);
                 vscode.window.showInformationMessage(srderr);
-            } 
+            }
             else 
             {
                 console.log(stdout);
                 vscode.window.showInformationMessage(stdout);
             }
+        });
+    },
+
+    flash_img(global, message) {
+        const fs = require('fs');
+        var child_process = require('child_process');
+        // var spawnObj = child_process.spawn('python3', ['/home/allen/BST-OS-img/v0.2.6/images/test.py', 'allen']);
+        vscode.window.showInformationMessage(message.param);
+        var spawnObj = child_process.spawn('python3', [message.param, message.paswd]);
+
+        spawnObj.stdout.on('data', function(chunk) {
+            vscode.window.showInformationMessage(chunk.toString());
+            console.log(chunk.toString());
+        });
+
+        spawnObj.stderr.on('data', (data) => {
+            vscode.window.showErrorMessage(data.toString());
+            console.log(data);
+        });
+
+        spawnObj.on('close', function(code) {
+            console.log('close code : ' + code);
+            vscode.window.showInformationMessage(code.toString());
+        });
+
+        spawnObj.on('exit', (code) => {
+            console.log('exit code : ' + code);
+            vscode.window.showInformationMessage(code.toString());
         });
     },
 
@@ -87,11 +112,12 @@ const messageHandler = {
     }
 };
 
-module.exports = function(context) {
-
+module.exports = function(context) 
+{
     // 注册命令，可以给命令配置快捷键或者右键菜单
     // 回调函数参数uri：当通过资源管理器右键执行命令时会自动把所选资源URI带过来，当通过编辑器中菜单执行命令时，会将当前打开的文档URI传过来
-    context.subscriptions.push(vscode.commands.registerCommand('extension.openWebview', function (uri) {
+    context.subscriptions.push(vscode.commands.registerCommand('extension.openWebview', function (uri) 
+    {
         // 工程目录一定要提前获取，因为创建了webview之后activeTextEditor会不准确
         const projectPath = util.getProjectPath(uri);
         console.log(projectPath);
@@ -109,8 +135,7 @@ module.exports = function(context) {
         );
 
         let global = { projectPath, panel};
-
-        panel.webview.html = getWebViewContent(context, 'src/view/test-webview.html');
+        panel.webview.html = getWebViewContent(context, 'src/view/webview.html');
 
         panel.webview.onDidReceiveMessage(message => {
             // cmd表示要执行的方法名称
