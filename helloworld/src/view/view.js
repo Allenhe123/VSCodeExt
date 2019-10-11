@@ -36,19 +36,27 @@ function callVscode(data, cb)
     vscode.postMessage(data);
 }
 
-function update_fm()
-{
+function update_fm() {
     var path = document.getElementById("fm-script").value;
-    var exec = 'python3 ';
-    exec += path;
-    callVscode( {cmd: 'update_fm', param: exec}, () => { this.alert('update fm successfully！');} );
+    callVscode( {cmd: 'update_fm', param: path}, () => { this.alert('update fm successfully！');} );
 }
 
-function flash_img()
-{
+function flash_img() {
     var path = document.getElementById("script-id").value;
     let password = document.getElementById("paswd-id").value;
     callVscode( {cmd: 'flash_img', param: path, paswd: password}, () => { this.alert('flash images successfully！');} );
+}
+
+function adb_push() {
+    let src = document.getElementById("src-id").value;
+    let dst = document.getElementById("dst-id").value;
+    callVscode( {cmd: 'adb_push', source: src, dest: dst}, () => { this.alert('push successfully！');} );
+}
+
+function adb_pull() {
+    let src = document.getElementById("pull-src-id").value;
+    let dst = document.getElementById("pull-dst-id").value;
+    callVscode( {cmd: 'adb_pull', source: src, dest: dst}, () => { this.alert('pull successfully！');} );
 }
 
 

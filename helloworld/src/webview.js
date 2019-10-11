@@ -61,20 +61,23 @@ const messageHandler = {
     },
 
     update_fm(global, message) {
-        invokeCallback(global.panel, message, {code: 0, text: '成功'});
-        var exec = require('child_process').exec;
-        var cmdStr = message.param;
-        exec(cmdStr, function (err, stdout, srderr)
-        {
-            if(err)
-            {
-                vscode.window.showInformationMessage(srderr);
-            }
-            else 
-            {
-                console.log(stdout);
-                vscode.window.showInformationMessage(stdout);
-            }
+        var child_process = require('child_process');
+        var spawnObj = child_process.spawn('python3', [message.param]);
+
+        spawnObj.stdout.on('data', function(chunk) {
+            vscode.window.showInformationMessage(chunk.toString());
+        });
+
+        spawnObj.stderr.on('data', (data) => {
+            vscode.window.showInformationMessage(data.toString());
+        });
+
+        spawnObj.on('close', function(code) {
+            vscode.window.showInformationMessage(code.toString());
+        });
+
+        spawnObj.on('exit', (code) => {
+            vscode.window.showInformationMessage(code.toString());
         });
     },
 
@@ -102,6 +105,65 @@ const messageHandler = {
 
         spawnObj.on('exit', (code) => {
             console.log('exit code : ' + code);
+            vscode.window.showInformationMessage(code.toString());
+        });
+    },
+
+    adb_push(global, message) {
+        // let child_process = require('child_process');
+        // let cmd = 'adb push ';
+        // cmd += message.source;
+        // cmd += ' ';
+        // cmd += message.dest;
+        // vscode.window.showInformationMessage(cmd);
+        // child_process.exec(cmd, function (err, stdout, srderr) {
+        //     if(err)
+        //     {
+        //         vscode.window.showErrorMessage(srderr);
+        //     }
+        //     else 
+        //     {
+        //         vscode.window.showInformationMessage(stdout);
+        //     }
+        // });
+
+        var child_process = require('child_process');
+        var spawnObj = child_process.spawn('adb', ['push', message.source, message.dest]);
+
+        spawnObj.stdout.on('data', function(chunk) {
+            vscode.window.showInformationMessage(chunk.toString());
+        });
+
+        spawnObj.stderr.on('data', (data) => {
+            vscode.window.showInformationMessage(data.toString());
+        });
+
+        spawnObj.on('close', function(code) {
+            vscode.window.showInformationMessage(code.toString());
+        });
+
+        spawnObj.on('exit', (code) => {
+            vscode.window.showInformationMessage(code.toString());
+        });
+    },
+
+    adb_pull(global, message) {
+        var child_process = require('child_process');
+        var spawnObj = child_process.spawn('adb', ['pull', message.source, message.dest]);
+
+        spawnObj.stdout.on('data', function(chunk) {
+            vscode.window.showInformationMessage(chunk.toString());
+        });
+
+        spawnObj.stderr.on('data', (data) => {
+            vscode.window.showInformationMessage(data.toString());
+        });
+
+        spawnObj.on('close', function(code) {
+            vscode.window.showInformationMessage(code.toString());
+        });
+
+        spawnObj.on('exit', (code) => {
             vscode.window.showInformationMessage(code.toString());
         });
     },
